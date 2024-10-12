@@ -1,0 +1,11 @@
+{
+  "name": "PixelSPI",
+  "description": "Easy SPI manager and device drivers",
+  "version": "0.0.1",
+  "repository":
+  {
+      "type": "git",
+      "url": "https://github.com/starfactorypixel/Library_PixelSPI.git"
+  },
+  "headers": ["SPIManager.h"]
+}
