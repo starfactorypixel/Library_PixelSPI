@@ -621,7 +621,7 @@ class SPI_HC165 : public SPIBaseDevice
 			SPIBaseDevice(cs_pin, spi_prescaler), 
 			_latch_pin(latch_pin.Port, {latch_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_SET)
 		{
-			_spi_config.first_bit = SPI_FIRSTBIT_LSB;
+			//_spi_config.first_bit = SPI_FIRSTBIT_LSB;
 
 			return;
 		}
