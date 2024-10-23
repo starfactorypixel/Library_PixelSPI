@@ -542,7 +542,7 @@ class SPI_HC595 : public SPIBaseDevice
 	public:
 		SPI_HC595(EasyPinD::d_pin_t cs_pin, EasyPinD::d_pin_t latch_pin, uint32_t spi_prescaler) : 
 			SPIBaseDevice(cs_pin, spi_prescaler), 
-			_latch_pin(latch_pin.Port, {latch_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_SET)
+			_latch_pin(latch_pin.Port, {latch_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_RESET)
 		{
 
 		}
@@ -594,14 +594,14 @@ class SPI_HC595 : public SPIBaseDevice
 		
 		void _SPI_Run()
 		{
-			_latch_pin.Off();
-			asm("nop\n nop\n");
-			_latch_pin.On();
-			
 			DeviceActivate();
 			_spi_interface->TransmitData(this, _data, sizeof(_data));
 			DeviceDeactivate();
-
+			
+			_latch_pin.On();
+			asm("nop\n nop\n");
+			_latch_pin.Off();
+			
 			return;
 		}
 		
