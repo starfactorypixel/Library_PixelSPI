@@ -600,6 +600,16 @@ class SPI_HC595 : public SPIBaseDevice
 			return;
 		}
 		
+		void WriteByMask(uint8_t device, const uint8_t byte, const uint8_t mask)
+		{
+			if(device >= _dev_count) return;
+			
+			_data[device] = (_data[device] & ~mask) | (byte & mask);
+			_SPI_Run();
+			
+			return;
+		}
+		
 	private:
 		
 		void _SPI_Run()
