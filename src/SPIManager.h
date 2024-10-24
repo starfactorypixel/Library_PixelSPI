@@ -590,6 +590,16 @@ class SPI_HC595 : public SPIBaseDevice
 			return (_data[device] >> pin) & 0b00000001;
 		}
 		
+		void WriteByte(uint8_t device, const uint8_t byte)
+		{
+			if(device >= _dev_count) return;
+			
+			_data[device] = byte;
+			_SPI_Run();
+			
+			return;
+		}
+		
 	private:
 		
 		void _SPI_Run()
