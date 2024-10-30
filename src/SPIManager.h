@@ -1,7 +1,5 @@
 #pragma once
 #include <inttypes.h>
-#include <string.h>
-#include <functional>
 #include "SPIManagerInterface.h"
 #include "SPIDeviceInterface.h"
 
