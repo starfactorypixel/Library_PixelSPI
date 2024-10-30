@@ -7,5 +7,11 @@
       "type": "git",
       "url": "https://github.com/starfactorypixel/Library_PixelSPI.git"
   },
-  "headers": ["SPIManager.h"]
+  "headers": ["SPIManager.h"],
+  "dependencies": [
+	{
+	  "name": "PixelEasyPins",
+	  "version": "https://github.com/starfactorypixel/Library_PixelEasyPins"
+	}
+  ]
 }
