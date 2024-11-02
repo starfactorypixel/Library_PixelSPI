@@ -76,6 +76,25 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			return;
 		}
 		
+		/// @brief Прочитать данные в объект
+		/// @tparam T Любой объект для побайтового чтения
+		/// @param address Адрес первого байта
+		/// @param data Объект для записи данных
+		/// @return true в случае успеха
+		template<typename T> 
+		bool ReadRaw(uint16_t address, T &data)
+		{
+			if(address + sizeof(T) > EEPROM_MAX_ADDRESS) return false;
+			if(WaitReady() == false) return false;
+			
+			DeviceActivate();
+			SendCmd3(CMD_READ_DATA, address);
+			_spi_interface->ReceiveData(this, (uint8_t *) &data, sizeof(T));
+			DeviceDeactivate();
+			
+			return true;
+		}
+		
 		
 		/// @brief Записать байт
 		/// @param address Адрес байта
