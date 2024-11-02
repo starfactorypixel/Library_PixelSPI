@@ -130,6 +130,34 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			return;
 		}
 		
+		/// @brief Записать данные из объекта
+		/// @tparam T Любой объект для побайтового чтения, должен быть кратен EEPROM_MAX_ADDRESS
+		/// @param address Адрес первого байта, должен быть кратен EEPROM_MAX_ADDRESS
+		/// @param data Объект для записи данных
+		/// @return true в случае успеха
+		template<typename T> 
+		bool WriteRaw(uint16_t address, const T &data)
+		{
+			static_assert(sizeof(T) % EEPROM_PAGE_SIZE == 0, "Size of T must be a multiple of 32 bytes.");
+			
+			if(address % EEPROM_PAGE_SIZE != 0 || address + sizeof(T) > EEPROM_MAX_ADDRESS) return false;
+			if(WaitReady() == false) return false;
+			
+			const uint8_t *dataPtr = (const uint8_t *) &data;
+			uint8_t pageCount = sizeof(T) / EEPROM_PAGE_SIZE;
+			
+			for(uint8_t i = 0; i < pageCount; ++i)
+			{
+				WritePage(address / EEPROM_PAGE_SIZE, (uint8_t *) dataPtr);
+				
+				address += EEPROM_PAGE_SIZE;
+				dataPtr += EEPROM_PAGE_SIZE;
+			}
+			
+			return true;
+		}
+		
+		
 		void WriteEnable()
 		{
 			DeviceActivate();
