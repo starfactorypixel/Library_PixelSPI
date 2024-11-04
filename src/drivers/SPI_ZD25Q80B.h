@@ -86,6 +86,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 		static constexpr uint32_t NOR_SECTOR_SIZE = 4096;
 		static constexpr uint32_t NOR_BLOCK32_SIZE = 32768;
 		static constexpr uint32_t NOR_BLOCK64_SIZE = 65536;
+		static constexpr uint32_t NOR_MEM_SIZE = 1048576;
 		
 		SPI_ZD25Q80B(EasyPinD::d_pin_t cs_pin, uint32_t spi_prescaler) : SPIDeviceInterface(cs_pin, spi_prescaler)
 		{
