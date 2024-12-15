@@ -14,7 +14,7 @@ class SPIManager : public SPIManagerInterface
 	public:
 		SPIManager(callback_config_t cfg, callback_tx_t tx, callback_rx_t rx, callback_txrx_t txrx) : _callback_config(cfg), _callback_tx(tx), _callback_rx(rx), _callback_txrx(txrx)
 		{
-
+			memset(devices, 0x00, sizeof(devices));
 		}
 		
 		void AddDevice(SPIDeviceInterface &device)
