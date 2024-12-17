@@ -138,7 +138,7 @@ void SPI_MCP2515::Tick(uint32_t &time)
 
 
 
-bool SPI_MCP2515::beginPacket(uint16_t id, uint8_t dlc, bool rtr)
+bool SPI_MCP2515::beginPacket(uint16_t id, bool rtr)
 {
 	if(id > 0x7FF) return false;
 	if(dlc > 8) return false;
@@ -147,14 +147,13 @@ bool SPI_MCP2515::beginPacket(uint16_t id, uint8_t dlc, bool rtr)
 	_tx.id = id;
 	_tx.extended = false;
 	_tx.rtr = rtr;
-	_tx.dlc = dlc;
 	_tx.length = 0;
 	memset(_tx.data, 0x00, sizeof(_tx.data));
 	
 	return true;
 }
 
-bool SPI_MCP2515::beginExtendedPacket(uint32_t id, uint8_t dlc, bool rtr)
+bool SPI_MCP2515::beginExtendedPacket(uint32_t id, bool rtr)
 {
 	if(id > 0x1FFFFFFF) return false;
 	if(dlc > 8) return false;
@@ -163,7 +162,6 @@ bool SPI_MCP2515::beginExtendedPacket(uint32_t id, uint8_t dlc, bool rtr)
 	_tx.id = id;
 	_tx.extended = true;
 	_tx.rtr = rtr;
-	_tx.dlc = dlc;
 	_tx.length = 0;
 	memset(_tx.data, 0x00, sizeof(_tx.data));
 	
@@ -188,9 +186,6 @@ bool SPI_MCP2515::endPacket()
 {
 	if(_tx.flag == false) return false;
 	_tx.flag = false;
-	
-	if(_tx.dlc >= 0)
-		_tx.length = _tx.dlc;
 	
 	uint8_t n = 0;
 	if(_tx.extended == true)
@@ -369,56 +364,7 @@ bool SPI_MCP2515::filterExtended(uint32_t id, uint32_t mask)
 
 
 
-bool SPI_MCP2515::cmd_observe()
-{
-	return writeReadRegister(REG_CANCTRL, 0x60);
-}
-
-bool SPI_MCP2515::cmd_loopback()
-{
-	return writeReadRegister(REG_CANCTRL, 0x40);
-}
-
-bool SPI_MCP2515::cmd_sleep()
-{
-	return writeReadRegister(REG_CANCTRL, 0x01);
-}
-
-bool SPI_MCP2515::cmd_wakeup()
-{
-	return writeReadRegister(REG_CANCTRL, 0x00);
-}
-
-
-
-
-
-
-/*
-void SPI_MCP2515::dumpRegisters(Stream& out)
-{
-  for (int i = 0; i < 128; i++) {
-    byte b = readRegister(i);
-
-    out.print("0x");
-    if (i < 16) {
-      out.print('0');
-    }
-    out.print(i, HEX);
-    out.print(": 0x");
-    if (b < 16) {
-      out.print('0');
-    }
-    out.println(b, HEX);
-  }
-}
-*/
-
-
-
-
-
-void SPI_MCP2515::reset()
+void SPI_MCP2515::cmd_reset()
 {
 	DeviceActivate();
 	uint8_t spi_data[] = {0xC0};
@@ -430,6 +376,30 @@ void SPI_MCP2515::reset()
 	
 	return;
 }
+
+void SPI_MCP2515::cmd_observe()
+{
+	return writeReadRegister(REG_CANCTRL, 0x60);
+}
+
+void SPI_MCP2515::cmd_loopback()
+{
+	return writeReadRegister(REG_CANCTRL, 0x40);
+}
+
+void SPI_MCP2515::cmd_sleep()
+{
+	return writeReadRegister(REG_CANCTRL, 0x01);
+}
+
+void SPI_MCP2515::cmd_wakeup()
+{
+	return writeReadRegister(REG_CANCTRL, 0x00);
+}
+
+
+
+
 
 uint8_t SPI_MCP2515::readRegister(uint8_t address)
 {

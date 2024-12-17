@@ -23,7 +23,7 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		uint32_t id = NO_CAN_ID;	// Идентификатор пакета CAN
 		uint8_t dlc = 0;			// DLC ??
 		uint8_t length = 0;			// Длина пакета CAN
-		uint8_t data[8] = {0x00};	// Данные пакета CAN
+		uint8_t data[8] = {};		// Данные пакета CAN
 	};
 	
 	public:
@@ -31,8 +31,7 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		SPI_MCP2515(EasyPinD::d_pin_t cs_pin, EasyPinD::d_pin_t int_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
 			_int_pin(int_pin.Port, {int_pin.Pin, GPIO_MODE_EVT_FALLING, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}), 
-			_rx{false, false, false, NO_CAN_ID, 0, 0, {0x00}},
-			_tx{false, false, false, NO_CAN_ID, 0, 0, {0x00}},
+			_rx{}, _tx{},
 			_onReceive(nullptr),
 			_last_tick(0)
 		{}
@@ -43,8 +42,8 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		virtual void Init() override;
 		virtual void Tick(uint32_t &time) override;
 		
-		bool beginPacket(uint16_t id, uint8_t dlc, bool rtr);
-		bool beginExtendedPacket(uint32_t id, uint8_t dlc, bool rtr);
+		bool beginPacket(uint16_t id, bool rtr = false);
+		bool beginExtendedPacket(uint32_t id, bool rtr = false);
 		uint8_t write(uint8_t byte){ return write(&byte, 1); }
 		uint8_t write(const uint8_t *buffer, uint8_t size);
 		bool endPacket();
@@ -56,16 +55,16 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		bool filterExtended(uint32_t id) { return filterExtended(id, 0x1fffffff); }
 		bool filterExtended(uint32_t id, uint32_t mask);
 		
-		bool cmd_observe();
-		bool cmd_loopback();
-		bool cmd_sleep();
-		bool cmd_wakeup();
+		void cmd_reset();
+		void cmd_observe();
+		void cmd_loopback();
+		void cmd_sleep();
+		void cmd_wakeup();
 		
 		//void dumpRegisters(Stream& out);
 		
 	private:
 		
-		void reset();
 		uint8_t readRegister(uint8_t address);
 		void modifyRegister(uint8_t address, uint8_t mask, uint8_t value);
 		void writeRegister(uint8_t address, uint8_t value);
