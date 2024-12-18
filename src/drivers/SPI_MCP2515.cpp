@@ -69,7 +69,7 @@ bool SPI_MCP2515::begin(uint32_t clock_frequency, uint32_t baud_rate, func_rx_t 
 	
 	_onReceive = callback;
 	
-	reset();
+	cmd_reset();
 
 	if( writeReadRegister(REG_CANCTRL, 0x80) == false ) return false;
 	
@@ -141,7 +141,6 @@ void SPI_MCP2515::Tick(uint32_t &time)
 bool SPI_MCP2515::beginPacket(uint16_t id, bool rtr)
 {
 	if(id > 0x7FF) return false;
-	if(dlc > 8) return false;
 	
 	_tx.flag = true;
 	_tx.id = id;
@@ -156,7 +155,6 @@ bool SPI_MCP2515::beginPacket(uint16_t id, bool rtr)
 bool SPI_MCP2515::beginExtendedPacket(uint32_t id, bool rtr)
 {
 	if(id > 0x1FFFFFFF) return false;
-	if(dlc > 8) return false;
 	
 	_tx.flag = true;
 	_tx.id = id;
@@ -364,7 +362,7 @@ bool SPI_MCP2515::filterExtended(uint32_t id, uint32_t mask)
 
 
 
-void SPI_MCP2515::cmd_reset()
+bool SPI_MCP2515::cmd_reset()
 {
 	DeviceActivate();
 	uint8_t spi_data[] = {0xC0};
@@ -374,25 +372,25 @@ void SPI_MCP2515::cmd_reset()
 	//delayMicroseconds(10);
 	HAL_Delay(5);
 	
-	return;
+	return true;
 }
 
-void SPI_MCP2515::cmd_observe()
+bool SPI_MCP2515::cmd_observe()
 {
 	return writeReadRegister(REG_CANCTRL, 0x60);
 }
 
-void SPI_MCP2515::cmd_loopback()
+bool SPI_MCP2515::cmd_loopback()
 {
 	return writeReadRegister(REG_CANCTRL, 0x40);
 }
 
-void SPI_MCP2515::cmd_sleep()
+bool SPI_MCP2515::cmd_sleep()
 {
 	return writeReadRegister(REG_CANCTRL, 0x01);
 }
 
-void SPI_MCP2515::cmd_wakeup()
+bool SPI_MCP2515::cmd_wakeup()
 {
 	return writeReadRegister(REG_CANCTRL, 0x00);
 }

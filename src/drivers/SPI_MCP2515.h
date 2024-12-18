@@ -55,13 +55,11 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		bool filterExtended(uint32_t id) { return filterExtended(id, 0x1fffffff); }
 		bool filterExtended(uint32_t id, uint32_t mask);
 		
-		void cmd_reset();
-		void cmd_observe();
-		void cmd_loopback();
-		void cmd_sleep();
-		void cmd_wakeup();
-		
-		//void dumpRegisters(Stream& out);
+		bool cmd_reset();
+		bool cmd_observe();
+		bool cmd_loopback();
+		bool cmd_sleep();
+		bool cmd_wakeup();
 		
 	private:
 		
