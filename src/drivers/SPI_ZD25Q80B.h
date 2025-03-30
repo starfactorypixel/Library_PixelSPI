@@ -148,7 +148,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_PAGE_PROGRAM, page);
+			SendCmd4(CMD_PAGE_PROGRAM, (page * NOR_PAGE_SIZE));
 			_spi_interface->TransmitData(this, data, NOR_PAGE_SIZE);
 			DeviceDeactivate();
 			
@@ -240,29 +240,25 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 		
 		bool WaitReady(uint32_t delay = 100000)
 		{
-			while((ReadStatus() & 0x01) == 0x01)
+			while(delay--)
 			{
-				if(--delay == 0) return false;
+				if((ReadStatus1() & 0x01) == 0)
+					return true;
 			}
 			
-			return true;
+			return false;
 		}
 		
-		uint16_t ReadStatus()
+		uint8_t ReadStatus1()
 		{
-			uint8_t data[2] = {0x00};
+			uint8_t status;
 			
 			DeviceActivate();
 			SendCmd1(CMD_READ_STATUS_REGISTER);
-			_spi_interface->ReceiveData(this, &data[0], 1);
-			DeviceDeactivate();
-
-			DeviceActivate();
-			SendCmd1(CMD_READ_STATUS_REGISTER_2);
-			_spi_interface->ReceiveData(this, &data[1], 1);
+			_spi_interface->ReceiveData(this, &status, 1);
 			DeviceDeactivate();
 			
-			return (((uint16_t)data[1] << 8) | (uint16_t)data[0]);
+			return status;
 		}
 		
 		void ReadDevID(uint8_t *data)
