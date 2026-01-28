@@ -13,11 +13,9 @@
 
 class SPIDeviceInterface
 {
-	static constexpr uint32_t MY_SPI_FIRSTBIT_MSB = 0;
-	
 	public:
 		SPIDeviceInterface(EasyPinD::d_pin_t spi_cs_pin, uint32_t spi_prescaler) : 
-			_spi_config{spi_prescaler, MY_SPI_FIRSTBIT_MSB}, 
+			_spi_config{spi_prescaler, 0}, 
 			_spi_cs_pin(spi_cs_pin.Port, {spi_cs_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_SET)
 		{
 			
