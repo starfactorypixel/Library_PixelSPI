@@ -30,7 +30,7 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		
 		SPI_MCP2515(EasyPinD::d_pin_t cs_pin, EasyPinD::d_pin_t int_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
-			_int_pin(int_pin.Port, {int_pin.Pin, GPIO_MODE_EVT_FALLING, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}), 
+			_int_pin(int_pin.Port, {int_pin.Pin, GPIO_MODE_INPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}), 
 			_rx{}, _tx{},
 			_onReceive(nullptr),
 			_last_tick(0)
