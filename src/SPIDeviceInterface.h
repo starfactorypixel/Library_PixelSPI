@@ -3,6 +3,14 @@
 #include <SPIManagerInterface.h>
 #include <EasyPinD.h>
 
+#if defined(ESP32)
+	#include "esp_rom_sys.h"
+	inline void HAL_Delay(uint32_t delay)
+	{
+		esp_rom_delay_us((delay * 1024));
+	}
+#endif
+
 class SPIDeviceInterface
 {
 	static constexpr uint32_t MY_SPI_FIRSTBIT_MSB = 0;
