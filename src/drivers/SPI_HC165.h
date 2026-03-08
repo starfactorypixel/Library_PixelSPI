@@ -14,7 +14,7 @@ class SPI_HC165 : public SPIDeviceInterface
 	using func_change_t = void (*)(uint8_t device, uint8_t pin, bool state);
 	
 	public:
-		SPI_HC165(DrakePin::PinD_t cs_pin, DrakePin::PinD_t latch_pin, uint32_t spi_prescaler) : 
+		SPI_HC165(const DrakePin::PinD_t &cs_pin, const DrakePin::PinD_t &latch_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
 			_latch_pin(latch_pin, DrakePin::Output, DrakePin::High)
 		{

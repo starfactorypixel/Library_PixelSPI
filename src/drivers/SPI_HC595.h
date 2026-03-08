@@ -12,7 +12,7 @@ template <uint8_t _dev_count>
 class SPI_HC595 : public SPIDeviceInterface
 {
 	public:
-		SPI_HC595(DrakePin::PinD_t cs_pin, DrakePin::PinD_t latch_pin, DrakePin::PinD_t oe_pin, uint32_t spi_prescaler) : 
+		SPI_HC595(const DrakePin::PinD_t &cs_pin, const DrakePin::PinD_t &latch_pin, const DrakePin::PinD_t &oe_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
 			_latch_pin(latch_pin, DrakePin::Output, DrakePin::Low), 
 			_oe_pin(oe_pin, DrakePin::Output, DrakePin::High)

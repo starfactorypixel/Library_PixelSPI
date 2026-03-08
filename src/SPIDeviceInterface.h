@@ -14,7 +14,7 @@
 class SPIDeviceInterface
 {
 	public:
-		SPIDeviceInterface(DrakePin::PinD_t spi_cs_pin, uint32_t spi_prescaler) : 
+		SPIDeviceInterface(const DrakePin::PinD_t &spi_cs_pin, uint32_t spi_prescaler) : 
 			_spi_config{spi_prescaler, 0}, 
 			_spi_cs_pin(spi_cs_pin, DrakePin::Output, DrakePin::High)
 		{}

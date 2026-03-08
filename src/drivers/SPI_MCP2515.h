@@ -28,7 +28,7 @@ class SPI_MCP2515 : public SPIDeviceInterface
 	
 	public:
 		
-		SPI_MCP2515(DrakePin::PinD_t cs_pin, DrakePin::PinD_t int_pin, uint32_t spi_prescaler) : 
+		SPI_MCP2515(const DrakePin::PinD_t &cs_pin, const DrakePin::PinD_t &int_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
 			_int_pin(int_pin, DrakePin::Input, DrakePin::HiZ), 
 			_rx{}, _tx{},
