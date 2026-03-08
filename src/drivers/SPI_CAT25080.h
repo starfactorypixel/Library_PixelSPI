@@ -1,7 +1,7 @@
 #pragma once
 #include <inttypes.h>
 #include <SPIManager.h>
-#include <EasyPinD.h>
+#include <DrakePinD.hpp>
 
 /*
 	Класс работы с SPI EEPROM памятью.
@@ -25,7 +25,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 		static constexpr uint16_t EEPROM_PAGE_SIZE = 32;
 		static constexpr uint16_t EEPROM_MEM_SIZE = 1024;
 		
-		SPI_CAT25080(EasyPinD::d_pin_t cs_pin, uint32_t spi_prescaler) : SPIDeviceInterface(cs_pin, spi_prescaler)
+		SPI_CAT25080(DrakePin::PinD_t cs_pin, uint32_t spi_prescaler) : SPIDeviceInterface(cs_pin, spi_prescaler)
 		{
 
 		}

@@ -7,7 +7,7 @@
 #include <inttypes.h>
 #include <string.h>
 #include <SPIManager.h>
-#include <EasyPinD.h>
+#include <DrakePinD.hpp>
 
 class SPI_MCP2515 : public SPIDeviceInterface
 {
@@ -28,9 +28,9 @@ class SPI_MCP2515 : public SPIDeviceInterface
 	
 	public:
 		
-		SPI_MCP2515(EasyPinD::d_pin_t cs_pin, EasyPinD::d_pin_t int_pin, uint32_t spi_prescaler) : 
+		SPI_MCP2515(DrakePin::PinD_t cs_pin, DrakePin::PinD_t int_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
-			_int_pin(int_pin.Port, {int_pin.Pin, GPIO_MODE_INPUT, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}), 
+			_int_pin(int_pin, DrakePin::Input, DrakePin::HiZ), 
 			_rx{}, _tx{},
 			_onReceive(nullptr),
 			_last_tick(0)
@@ -68,7 +68,7 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		void writeRegister(uint8_t address, uint8_t value);
 		bool writeReadRegister(uint8_t address, uint8_t value);
 		
-		EasyPinD _int_pin;
+		DrakePinD _int_pin;
 		packet_t _rx;
 		packet_t _tx;
 		func_rx_t _onReceive;

@@ -2,7 +2,7 @@
 #include <inttypes.h>
 #include <string.h>
 #include <SPIManager.h>
-#include <EasyPinD.h>
+#include <DrakePinD.hpp>
 
 /*
 
@@ -12,10 +12,10 @@ template <uint8_t _dev_count>
 class SPI_HC595 : public SPIDeviceInterface
 {
 	public:
-		SPI_HC595(EasyPinD::d_pin_t cs_pin, EasyPinD::d_pin_t latch_pin, EasyPinD::d_pin_t oe_pin, uint32_t spi_prescaler) : 
+		SPI_HC595(DrakePin::PinD_t cs_pin, DrakePin::PinD_t latch_pin, DrakePin::PinD_t oe_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
-			_latch_pin(latch_pin.Port, {latch_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_RESET), 
-			_oe_pin(oe_pin.Port, {oe_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_SET)
+			_latch_pin(latch_pin, DrakePin::Output, DrakePin::Low), 
+			_oe_pin(oe_pin, DrakePin::Output, DrakePin::High)
 		{
 
 		}
@@ -113,7 +113,7 @@ class SPI_HC595 : public SPIDeviceInterface
 			return;
 		}
 		
-		EasyPinD _latch_pin;
-		EasyPinD _oe_pin;
+		DrakePinD _latch_pin;
+		DrakePinD _oe_pin;
 		uint8_t _data[_dev_count];
 };

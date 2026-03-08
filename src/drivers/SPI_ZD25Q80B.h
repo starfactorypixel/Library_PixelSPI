@@ -1,7 +1,7 @@
 #pragma once
 #include <inttypes.h>
 #include <SPIManager.h>
-#include <EasyPinD.h>
+#include <DrakePinD.hpp>
 
 /*
 	Класс работы с SPI NOR памятью.
@@ -88,7 +88,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 		static constexpr uint32_t NOR_BLOCK64_SIZE = 65536;
 		static constexpr uint32_t NOR_MEM_SIZE = 1048576;
 		
-		SPI_ZD25Q80B(EasyPinD::d_pin_t cs_pin, uint32_t spi_prescaler) : SPIDeviceInterface(cs_pin, spi_prescaler)
+		SPI_ZD25Q80B(DrakePin::PinD_t cs_pin, uint32_t spi_prescaler) : SPIDeviceInterface(cs_pin, spi_prescaler)
 		{
 
 		}

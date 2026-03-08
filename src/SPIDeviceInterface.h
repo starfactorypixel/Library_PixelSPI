@@ -1,7 +1,7 @@
 #pragma once
 #include <inttypes.h>
 #include <SPIManagerInterface.h>
-#include <EasyPinD.h>
+#include <DrakePinD.hpp>
 
 #if defined(ESP32)
 	#include "esp_rom_sys.h"
@@ -14,12 +14,10 @@
 class SPIDeviceInterface
 {
 	public:
-		SPIDeviceInterface(EasyPinD::d_pin_t spi_cs_pin, uint32_t spi_prescaler) : 
+		SPIDeviceInterface(DrakePin::PinD_t spi_cs_pin, uint32_t spi_prescaler) : 
 			_spi_config{spi_prescaler, 0}, 
-			_spi_cs_pin(spi_cs_pin.Port, {spi_cs_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_SET)
-		{
-			
-		}
+			_spi_cs_pin(spi_cs_pin, DrakePin::Output, DrakePin::High)
+		{}
 		
 		virtual void Init() = 0;
 		virtual void Tick(uint32_t &time) = 0;
@@ -52,5 +50,5 @@ class SPIDeviceInterface
 		SPIManagerInterface::spi_config_t _spi_config = {};
 		
 	private:
-		EasyPinD _spi_cs_pin;
+		DrakePinD _spi_cs_pin;
 };

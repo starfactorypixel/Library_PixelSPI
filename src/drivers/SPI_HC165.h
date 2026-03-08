@@ -2,7 +2,7 @@
 #include <inttypes.h>
 #include <string.h>
 #include <SPIManager.h>
-#include <EasyPinD.h>
+#include <DrakePinD.hpp>
 
 /*
 
@@ -14,9 +14,9 @@ class SPI_HC165 : public SPIDeviceInterface
 	using func_change_t = void (*)(uint8_t device, uint8_t pin, bool state);
 	
 	public:
-		SPI_HC165(EasyPinD::d_pin_t cs_pin, EasyPinD::d_pin_t latch_pin, uint32_t spi_prescaler) : 
+		SPI_HC165(DrakePin::PinD_t cs_pin, DrakePin::PinD_t latch_pin, uint32_t spi_prescaler) : 
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
-			_latch_pin(latch_pin.Port, {latch_pin.Pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH}, GPIO_PIN_SET)
+			_latch_pin(latch_pin, DrakePin::Output, DrakePin::High)
 		{
 			//_spi_config.first_bit = SPI_FIRSTBIT_LSB;
 
@@ -125,7 +125,7 @@ class SPI_HC165 : public SPIDeviceInterface
 			return;
 		}
 		
-		EasyPinD _latch_pin;
+		DrakePinD _latch_pin;
 		uint8_t _data_new[_dev_count];
 		uint8_t _data_old[_dev_count];
 		uint32_t _last_tick = 0;
