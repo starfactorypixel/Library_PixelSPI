@@ -95,8 +95,14 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 		
 		virtual void Init() override
 		{
+			DeviceActivate();
 			SendCmd1(CMD_RESET_ENABLE);
+			DeviceDeactivate();
+			
+			DeviceActivate();
 			SendCmd1(CMD_RESET);
+			DeviceDeactivate();
+			
 			WaitReady();
 			
 			return;
