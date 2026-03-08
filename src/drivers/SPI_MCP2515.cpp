@@ -398,10 +398,13 @@ bool SPI_MCP2515::cmd_reset()
 	_spi_interface->TransmitData(this, spi_data, sizeof(spi_data));
 	DeviceDeactivate();
 	
-	//delayMicroseconds(10);
-	HAL_Delay(5);
+	uint8_t stat;
+	uint16_t timeout = 1000;
+	do {
+		stat = readRegister(0x0E);
+	} while (((stat & 0xE0) != 0x80) && --timeout);
 	
-	return true;
+	return timeout != 0;
 }
 
 bool SPI_MCP2515::cmd_observe()
