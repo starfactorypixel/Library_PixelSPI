@@ -3,14 +3,6 @@
 #include <SPIManagerInterface.h>
 #include <DrakePinD.hpp>
 
-#if defined(ESP32)
-	#include "esp_rom_sys.h"
-	inline void HAL_Delay(uint32_t delay)
-	{
-		esp_rom_delay_us((delay * 1024));
-	}
-#endif
-
 class SPIDeviceInterface
 {
 	public:
