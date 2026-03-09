@@ -125,7 +125,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 
 			DeviceActivate();
 			SendCmd4(CMD_READ_ARRAY, address);
-			_spi_interface->ReceiveData(this, data, length);
+			_spi_interface->ReceiveData(data, length);
 			DeviceDeactivate();
 			
 			return;
@@ -155,7 +155,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 			WriteEnable();
 			DeviceActivate();
 			SendCmd4(CMD_PAGE_PROGRAM, (page * NOR_PAGE_SIZE));
-			_spi_interface->TransmitData(this, data, NOR_PAGE_SIZE);
+			_spi_interface->TransmitData(data, NOR_PAGE_SIZE);
 			DeviceDeactivate();
 			
 			return;
@@ -261,27 +261,34 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 			
 			DeviceActivate();
 			SendCmd1(CMD_READ_STATUS_REGISTER);
-			_spi_interface->ReceiveData(this, &status, 1);
+			_spi_interface->ReceiveData(&status, 1);
 			DeviceDeactivate();
 			
 			return status;
 		}
 		
-		void ReadDevID(uint8_t *data)
+		template<uint8_t N> 
+		void ReadDevID(uint8_t (&data)[N])
 		{
+			static_assert(N >= 3, "Buffer too small for DevID");
+			
 			DeviceActivate();
 			SendCmd1(CMD_READ_ID);
-			_spi_interface->ReceiveData(this, data, 3);
+			_spi_interface->ReceiveData(data, 3);
 			DeviceDeactivate();
 			
 			return;
 		}
 		
-		void ReadUniqueID(uint8_t *data)
+		template<uint8_t N> 
+		void ReadUniqueID(uint8_t (&data)[N])
 		{
+			static_assert(N >= 16, "Buffer too small for UniqueID");
+			
 			DeviceActivate();
-			SendCmd4(CMD_READ_UNIQUE_ID, 0UL);
-			_spi_interface->ReceiveData(this, data, 16);
+			uint8_t tx[5] = {CMD_READ_UNIQUE_ID, 0x00, 0x00, 0x00, 0x00};
+			_spi_interface->TransmitData(tx, sizeof(tx));
+			_spi_interface->ReceiveData(data, 16);
 			DeviceDeactivate();
 			
 			return;
@@ -292,7 +299,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 			uint8_t data[1] = {0x00};
 			data[0] = cmd;
 			
-			_spi_interface->TransmitData(this, data, sizeof(data));
+			_spi_interface->TransmitData(data, sizeof(data));
 		}
 		
 		void SendCmd4(uint8_t cmd, uint32_t address)
@@ -303,7 +310,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 			data[2] = (address >> 8) & 0xFF;
 			data[3] = address & 0xFF;
 			
-			_spi_interface->TransmitData(this, data, sizeof(data));
+			_spi_interface->TransmitData(data, sizeof(data));
 		}
 
 	private:
