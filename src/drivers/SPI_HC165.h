@@ -119,7 +119,7 @@ class SPI_HC165 : public SPIDeviceInterface
 			_latch_pin.On();
 
 			DeviceActivate();
-			_spi_interface->ReceiveData(this, _data_new, sizeof(_data_new));
+			_spi_interface->ReceiveData(_data_new, sizeof(_data_new));
 			DeviceDeactivate();
 			
 			return;

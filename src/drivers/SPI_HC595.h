@@ -103,7 +103,7 @@ class SPI_HC595 : public SPIDeviceInterface
 		void _SPI_Run()
 		{
 			DeviceActivate();
-			_spi_interface->TransmitData(this, _data, sizeof(_data));
+			_spi_interface->TransmitData(_data, sizeof(_data));
 			DeviceDeactivate();
 			
 			_latch_pin.On();

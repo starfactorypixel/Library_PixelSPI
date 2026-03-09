@@ -395,7 +395,7 @@ bool SPI_MCP2515::cmd_reset()
 {
 	DeviceActivate();
 	uint8_t spi_data[] = {0xC0};
-	_spi_interface->TransmitData(this, spi_data, sizeof(spi_data));
+	_spi_interface->TransmitData(spi_data, sizeof(spi_data));
 	DeviceDeactivate();
 	
 	uint8_t stat;
@@ -435,8 +435,8 @@ uint8_t SPI_MCP2515::readRegister(uint8_t address)
 {
 	DeviceActivate();
 	uint8_t spi_data[] = {0x03, address};
-	_spi_interface->TransmitData(this, spi_data, sizeof(spi_data));
-	_spi_interface->ReceiveData(this, spi_data, 1);
+	_spi_interface->TransmitData(spi_data, sizeof(spi_data));
+	_spi_interface->ReceiveData(spi_data, 1);
 	DeviceDeactivate();
 	
 	return spi_data[0];
@@ -446,7 +446,7 @@ void SPI_MCP2515::modifyRegister(uint8_t address, uint8_t mask, uint8_t value)
 {
 	DeviceActivate();
 	uint8_t spi_data[] = {0x05, address, mask, value};
-	_spi_interface->TransmitData(this, spi_data, sizeof(spi_data));
+	_spi_interface->TransmitData(spi_data, sizeof(spi_data));
 	DeviceDeactivate();
 	
 	return;
@@ -456,7 +456,7 @@ void SPI_MCP2515::writeRegister(uint8_t address, uint8_t value)
 {
 	DeviceActivate();
 	uint8_t spi_data[] = {0x02, address, value};
-	_spi_interface->TransmitData(this, spi_data, sizeof(spi_data));
+	_spi_interface->TransmitData(spi_data, sizeof(spi_data));
 	DeviceDeactivate();
 	
 	return;

@@ -53,17 +53,17 @@ class SPIManager : public SPIManagerInterface
 			_callback_config(config);
 		}
 		
-		virtual void TransmitData(SPIDeviceInterface *device, uint8_t *data, uint16_t length) override
+		virtual void TransmitData(uint8_t *data, uint16_t length) override
 		{
 			_callback_tx(data, length);
 		}
 		
-		virtual void ReceiveData(SPIDeviceInterface *device, uint8_t *data, uint16_t length) override
+		virtual void ReceiveData(uint8_t *data, uint16_t length) override
 		{
 			_callback_rx(data, length);
 		}
 		
-		virtual void TransmitReceive(SPIDeviceInterface *device, uint8_t *tx_data, uint8_t *rx_data, uint16_t length) override
+		virtual void TransmitReceive(uint8_t *tx_data, uint8_t *rx_data, uint16_t length) override
 		{
 			_callback_txrx(tx_data, rx_data, length);
 		}

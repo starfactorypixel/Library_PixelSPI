@@ -56,7 +56,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			
 			DeviceActivate();
 			SendCmd3(CMD_READ_DATA, address);
-			_spi_interface->ReceiveData(this, result, sizeof(result));
+			_spi_interface->ReceiveData(result, sizeof(result));
 			DeviceDeactivate();
 			
 			return result[0];
@@ -72,7 +72,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 
 			DeviceActivate();
 			SendCmd3(CMD_READ_DATA, (page * EEPROM_PAGE_SIZE));
-			_spi_interface->ReceiveData(this, data, EEPROM_PAGE_SIZE);
+			_spi_interface->ReceiveData(data, EEPROM_PAGE_SIZE);
 			DeviceDeactivate();
 			
 			return;
@@ -91,7 +91,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			
 			DeviceActivate();
 			SendCmd3(CMD_READ_DATA, address);
-			_spi_interface->ReceiveData(this, (uint8_t *) &data, sizeof(T));
+			_spi_interface->ReceiveData((uint8_t *) &data, sizeof(T));
 			DeviceDeactivate();
 			
 			return true;
@@ -109,7 +109,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			WriteEnable();
 			DeviceActivate();
 			SendCmd3(CMD_WRITE_DATA, address);
-			_spi_interface->TransmitData(this, (uint8_t *) &data, 1);
+			_spi_interface->TransmitData((uint8_t *) &data, 1);
 			DeviceDeactivate();
 			
 			return;
@@ -126,7 +126,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			WriteEnable();
 			DeviceActivate();
 			SendCmd3(CMD_WRITE_DATA, (page * EEPROM_PAGE_SIZE));
-			_spi_interface->TransmitData(this, data, EEPROM_PAGE_SIZE);
+			_spi_interface->TransmitData(data, EEPROM_PAGE_SIZE);
 			DeviceDeactivate();
 			
 			return;
@@ -185,7 +185,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			
 			DeviceActivate();
 			SendCmd1(CMD_READ_STATUS);
-			_spi_interface->ReceiveData(this, result, sizeof(result));
+			_spi_interface->ReceiveData(result, sizeof(result));
 			DeviceDeactivate();
 			
 			return result[0];
@@ -196,7 +196,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			uint8_t data[1];
 			data[0] = cmd;
 			
-			_spi_interface->TransmitData(this, data, sizeof(data));
+			_spi_interface->TransmitData(data, sizeof(data));
 		}
 		
 		void SendCmd3(uint8_t cmd, uint16_t address)
@@ -206,7 +206,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			data[1] = (address >> 8) & 0xFF;
 			data[2] = address & 0xFF;
 			
-			_spi_interface->TransmitData(this, data, sizeof(data));
+			_spi_interface->TransmitData(data, sizeof(data));
 		}
 		
 	private:
