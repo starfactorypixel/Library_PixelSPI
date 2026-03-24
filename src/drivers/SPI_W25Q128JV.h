@@ -49,7 +49,7 @@ class SPI_W25Q128JV : public SPIDeviceInterface
 	public:
 
 		static constexpr uint32_t NOR_MAX_ADDRESS = 16777215;
-		static constexpr uint32_t NOR_MAX_PAGES = 65535;
+		static constexpr uint32_t NOR_MAX_PAGE = 65535;
 		static constexpr uint32_t NOR_MAX_SECTOR = 4095;
 		static constexpr uint32_t NOR_MAX_BLOCK32 = 511;
 		static constexpr uint32_t NOR_MAX_BLOCK64 = 255;
@@ -87,12 +87,12 @@ class SPI_W25Q128JV : public SPIDeviceInterface
 		
 		
 		/// @brief Прочитать байты
-		/// @param address Адррес первого байта
+		/// @param address Адрес первого байта
 		/// @param length Кол-во читаемых байт
 		/// @param data Массив куда положить прочитанные данные
-		void ReadBytes(uint32_t address, uint32_t length, uint8_t *data)
+		void ReadBytes(uint32_t address, uint8_t *data, uint32_t length)
 		{
-			if(address > NOR_MAX_ADDRESS) return;
+			if(address + length > NOR_MEM_SIZE) return;
 			if(WaitReady() == false) return;
 
 			DeviceActivate();
@@ -103,35 +103,49 @@ class SPI_W25Q128JV : public SPIDeviceInterface
 			return;
 		}
 	
-		/// @brief Прочитать страницу, 256 байт
-		/// @warning Т.е. флешка не имеет страниц, её чтение симулируется
+		/// @brief Прочитать с указанной страницы указанное кол-во байт
 		/// @param page Адрес страницы
 		/// @param data Массив куда положить прочитанные данные
-		void ReadPage(uint32_t page, uint8_t *data)
+		/// @param length Кол-во читаемых байт
+		void ReadPage(uint32_t page, uint8_t *data, uint32_t length = NOR_PAGE_SIZE)
 		{
-			if(page > NOR_MAX_PAGES) return;
+			if(page > NOR_MAX_PAGE) return;
 
-			ReadBytes((page * NOR_PAGE_SIZE), NOR_PAGE_SIZE, data);
+			ReadBytes((page * NOR_PAGE_SIZE), data, length);
+			
+			return;
+		}
+		
+		/// @brief Записать по указанному адресу указанное кол-во байт (не более 256)
+		/// @param address Адрес первого байта
+		/// @param data Массив откуда взять записываемые данные
+		/// @param length Кол-во записываемых байт
+		void WriteBytes(uint32_t address, uint8_t *data, uint32_t length)
+		{
+			if(address + length > NOR_MEM_SIZE) return;
+			if((address % NOR_PAGE_SIZE) + length > NOR_PAGE_SIZE) return;
+			if(WaitReady() == false) return;
+			
+			WriteEnable();
+			DeviceActivate();
+			SendCmd4(CMD_PAGE_PROGRAM, address);
+			_spi_interface->TransmitData(data, length);
+			DeviceDeactivate();
 			
 			return;
 		}
 
-		
-		/// @brief Записать страницу, 256 байт
-		/// @warning Т.е. флешка не имеет страниц, её запись симулируется
+		/// @brief Записать в указанную страницу указанное кол-во байт (не более 256)
 		/// @param page Адрес страницы
 		/// @param data Массив откуда взять записываемые данные
-		void WritePage(uint32_t page, uint8_t *data)
+		/// @param length Кол-во записываемых байт
+		void WritePage(uint32_t page, uint8_t *data, uint32_t length = NOR_PAGE_SIZE)
 		{
-			if(page > NOR_MAX_PAGES) return;
-			if(WaitReady() == false) return;
-
-			WriteEnable();
-			DeviceActivate();
-			SendCmd4(CMD_PAGE_PROGRAM, (page * NOR_PAGE_SIZE));
-			_spi_interface->TransmitData(data, NOR_PAGE_SIZE);
-			DeviceDeactivate();
+			if(page > NOR_MAX_PAGE) return;
+			if(length > NOR_PAGE_SIZE) return;
 			
+			WriteBytes((page * NOR_PAGE_SIZE), data, length);
+
 			return;
 		}
 

@@ -88,7 +88,7 @@ class SPI_ZD25WQ80C : public SPIDeviceInterface
 		/// @param address Адрес первого байта
 		/// @param length Кол-во читаемых байт
 		/// @param data Массив куда положить прочитанные данные
-		void ReadBytes(uint32_t address, uint32_t length, uint8_t *data)
+		void ReadBytes(uint32_t address, uint8_t *data, uint32_t length)
 		{
 			if(address + length > NOR_MEM_SIZE) return;
 			if(WaitReady() == false) return;
@@ -109,7 +109,7 @@ class SPI_ZD25WQ80C : public SPIDeviceInterface
 		{
 			if(page > NOR_MAX_PAGE) return;
 			
-			ReadBytes((page * NOR_PAGE_SIZE), length, data);
+			ReadBytes((page * NOR_PAGE_SIZE), data, length);
 			
 			return;
 		}
@@ -141,14 +141,9 @@ class SPI_ZD25WQ80C : public SPIDeviceInterface
 		{
 			if(page > NOR_MAX_PAGE) return;
 			if(length > NOR_PAGE_SIZE) return;
-			if(WaitReady() == false) return;
-
-			WriteEnable();
-			DeviceActivate();
-			SendCmd4(CMD_PAGE_PROGRAM, (page * NOR_PAGE_SIZE));
-			_spi_interface->TransmitData(data, length);
-			DeviceDeactivate();
 			
+			WriteBytes((page * NOR_PAGE_SIZE), data, length);
+
 			return;
 		}
 		
