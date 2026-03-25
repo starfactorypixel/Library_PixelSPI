@@ -20,7 +20,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 	public:
 
 		static constexpr uint16_t EEPROM_MAX_ADDRESS = 1023;
-		static constexpr uint16_t EEPROM_MAX_PAGES = 31;
+		static constexpr uint16_t EEPROM_MAX_PAGE = 31;
 		
 		static constexpr uint16_t EEPROM_PAGE_SIZE = 32;
 		static constexpr uint16_t EEPROM_MEM_SIZE = 1024;
@@ -67,7 +67,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 		/// @param data Массив для записи
 		void ReadPage(uint16_t page, uint8_t *data)
 		{
-			if(page > EEPROM_MAX_PAGES) return;
+			if(page > EEPROM_MAX_PAGE) return;
 			if(WaitReady() == false) return;
 
 			DeviceActivate();
@@ -120,7 +120,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 		/// @param data Массив для записи
 		void WritePage(uint16_t page, uint8_t *data)
 		{
-			if(page > EEPROM_MAX_PAGES) return;
+			if(page > EEPROM_MAX_PAGE) return;
 			if(WaitReady() == false) return;
 			
 			WriteEnable();
