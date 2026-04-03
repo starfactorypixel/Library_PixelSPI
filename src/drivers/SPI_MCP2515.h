@@ -32,8 +32,7 @@ class SPI_MCP2515 : public SPIDeviceInterface
 			SPIDeviceInterface(cs_pin, spi_prescaler), 
 			_int_pin(int_pin, DrakePin::Input, DrakePin::HiZ), 
 			_rx{}, _tx{},
-			_onReceive(nullptr),
-			_last_tick(0)
+			_onReceive(nullptr)
 		{}
 		
 		bool begin(uint32_t clock_frequency, uint32_t baud_rate, func_rx_t callback);
@@ -72,7 +71,6 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		packet_t _rx;
 		packet_t _tx;
 		func_rx_t _onReceive;
-		uint32_t _last_tick;
 		
 		
 		struct cnf_f
