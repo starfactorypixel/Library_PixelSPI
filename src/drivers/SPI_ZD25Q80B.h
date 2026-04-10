@@ -187,7 +187,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_PAGE_ERASE, page);
+			SendCmd4(CMD_PAGE_ERASE, (page * NOR_PAGE_SIZE));
 			DeviceDeactivate();
 			
 			return;
@@ -202,7 +202,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_SECTOR_ERASE, sector);
+			SendCmd4(CMD_SECTOR_ERASE, (sector * NOR_SECTOR_SIZE));
 			DeviceDeactivate();
 			
 			return;
@@ -217,7 +217,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_BLOCK_ERASE_32K, block);
+			SendCmd4(CMD_BLOCK_ERASE_32K, (block * NOR_BLOCK32_SIZE));
 			DeviceDeactivate();
 			
 			return;
@@ -232,7 +232,7 @@ class SPI_ZD25Q80B : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_BLOCK_ERASE_64K, block);
+			SendCmd4(CMD_BLOCK_ERASE_64K, (block * NOR_BLOCK64_SIZE));
 			DeviceDeactivate();
 			
 			return;

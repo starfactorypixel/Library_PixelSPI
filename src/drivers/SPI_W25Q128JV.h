@@ -158,7 +158,7 @@ class SPI_W25Q128JV : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_SECTOR_ERASE_4KB, sector);
+			SendCmd4(CMD_SECTOR_ERASE_4KB, (sector * NOR_SECTOR_SIZE));
 			DeviceDeactivate();
 			
 			return;
@@ -173,7 +173,7 @@ class SPI_W25Q128JV : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_BLOCK_ERASE_32KB, block);
+			SendCmd4(CMD_BLOCK_ERASE_32KB, (block * NOR_BLOCK32_SIZE));
 			DeviceDeactivate();
 			
 			return;
@@ -188,7 +188,7 @@ class SPI_W25Q128JV : public SPIDeviceInterface
 
 			WriteEnable();
 			DeviceActivate();
-			SendCmd4(CMD_BLOCK_ERASE_64KB, block);
+			SendCmd4(CMD_BLOCK_ERASE_64KB, (block * NOR_BLOCK64_SIZE));
 			DeviceDeactivate();
 			
 			return;
