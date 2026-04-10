@@ -147,9 +147,6 @@ void SPI_MCP2515::Init()
 
 void SPI_MCP2515::Tick(uint32_t &time)
 {
-	if(time - _last_tick == 0) return;
-	_last_tick = time;
-	
 	if(_int_pin.Read() == DrakePin::Low)
 	{
 		if(readRegister(REG_CANINTF) == 0) return;
