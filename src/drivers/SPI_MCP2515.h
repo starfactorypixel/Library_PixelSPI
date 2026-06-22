@@ -39,7 +39,7 @@ class SPI_MCP2515 : public SPIDeviceInterface
 		void end();
 		
 		virtual void Init() override;
-		virtual void Tick(uint32_t &time) override;
+		virtual void Tick(uint32_t time) override;
 		
 		bool beginPacket(uint16_t id, bool rtr = false);
 		bool beginExtendedPacket(uint32_t id, bool rtr = false);

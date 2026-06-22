@@ -39,7 +39,7 @@ class SPI_CAT25080 : public SPIDeviceInterface
 			return;
 		}
 		
-		virtual void Tick(uint32_t &time) override
+		virtual void Tick(uint32_t time) override
 		{
 			return;
 		}

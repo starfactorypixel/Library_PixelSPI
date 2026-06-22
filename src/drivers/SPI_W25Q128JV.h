@@ -80,7 +80,7 @@ class SPI_W25Q128JV : public SPIDeviceInterface
 			return;
 		}
 		
-		virtual void Tick(uint32_t &time) override
+		virtual void Tick(uint32_t time) override
 		{
 			return;
 		}

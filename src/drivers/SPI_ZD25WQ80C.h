@@ -78,7 +78,7 @@ class SPI_ZD25WQ80C : public SPIDeviceInterface
 			return;
 		}
 		
-		virtual void Tick(uint32_t &time) override
+		virtual void Tick(uint32_t time) override
 		{
 			return;
 		}

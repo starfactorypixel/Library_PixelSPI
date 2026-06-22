@@ -33,6 +33,7 @@ class SPIManager : public SPIManagerInterface
 			for(uint8_t i = 0; i < devices_count; ++i)
 			{
 				devices[i]->Tick(time);
+				// Нужно обновлять время, т.к. мы можем надолго застрять в методе Tick, например чтение SPI флешки
 			}
 			
 			return;

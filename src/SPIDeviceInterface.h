@@ -12,7 +12,7 @@ class SPIDeviceInterface
 		{}
 		
 		virtual void Init() = 0;
-		virtual void Tick(uint32_t &time) = 0;
+		virtual void Tick(uint32_t time) = 0;
 		
 		void PrepareInit(SPIManagerInterface *spi)
 		{

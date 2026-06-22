@@ -45,7 +45,7 @@ class SPI_HC165 : public SPIDeviceInterface
 			return;
 		}
 		
-		virtual void Tick(uint32_t &time) override
+		virtual void Tick(uint32_t time) override
 		{
 			if(time - _last_tick > _tick_time)
 			{
