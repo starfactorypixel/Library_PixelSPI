@@ -8,7 +8,7 @@
 
 */
 
-template <uint8_t _dev_count> 
+template <uint8_t _dev_count, uint32_t _tick_time = 25> 
 class SPI_HC165 : public SPIDeviceInterface
 {
 	using func_change_t = void (*)(uint8_t device, uint8_t pin, bool state);
@@ -47,7 +47,7 @@ class SPI_HC165 : public SPIDeviceInterface
 		
 		virtual void Tick(uint32_t &time) override
 		{
-			if(time - _last_tick > 25)
+			if(time - _last_tick > _tick_time)
 			{
 				_last_tick = time;
 				
@@ -97,7 +97,7 @@ class SPI_HC165 : public SPIDeviceInterface
 			if(device >= _dev_count) return false;
 			if(pin >= 8) return false;
 			
-			return (_data_new[device] >> pin) & 0b00000001;
+			return (_data_new[device] >> pin) & 0x01;
 		}
 		
 	private:
