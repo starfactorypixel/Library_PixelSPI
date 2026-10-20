@@ -1,13 +1,20 @@
 {
   "name": "PixelSPI",
   "description": "Easy SPI manager and device drivers",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/starfactorypixel/Library_PixelSPI.git"
   },
   "headers": [
-    "SPIManager.h"
+    "SPIManager.h",
+    "SPI_CAT25080.h",
+    "SPI_HC165.h",
+    "SPI_HC595.h",
+    "SPI_MCP2515.h",
+    "SPI_W25Q128JV.h",
+    "SPI_ZD25Q80B.h",
+    "SPI_ZD25WQ80C.h"
   ],
   "dependencies": [
     {
